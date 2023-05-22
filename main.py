@@ -5,7 +5,8 @@ from PIL import Image
 
 INPUT_IMAGE = r'Cropped Image.jpg'
 OUTPUT_IMAGE = 'rembg.jpg'
-ORIGINAL_IMAGE = r'TEST IMAGES\1.jpg'
+# ORIGINAL_IMAGE = r'TEST IMAGES\1.jpg'
+ORIGINAL_IMAGE = r'TEST IMAGES\2.jpg'
 
 #Read the image
 img = cv.imread(ORIGINAL_IMAGE)
@@ -38,15 +39,20 @@ output.save(OUTPUT_IMAGE)
 ##Read the iamge
 image = cv.imread(OUTPUT_IMAGE)
 
+## converting the image to RGBA 
+#image = cv.cvtColor(image, cv.COLOR_BGR2RGBA)
+
 # Grayscale
 gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+## Gaussian blur
+gray = imgBlur = cv.GaussianBlur(gray, (5,5), 1)
   
 # Find Canny edges
-edged = cv.Canny(gray,30, 950)
+edged = cv.Canny(gray,30, 400)
 
 ##Detect and draw contours
 contours, _ = cv.findContours(edged, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
-cv.drawContours(image, contours, -1, (0, 255, 0), 3)
+cv.drawContours(image, contours, -1, (0, 255, 0), 2)
 
 ## Empty image array
 empty_image = np.zeros_like(img)
