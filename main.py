@@ -39,14 +39,14 @@ image = cv.imread(OUTPUT_IMAGE)
 gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
   
 # Find Canny edges
-edged = cv.Canny(gray,30, 900)
+edged = cv.Canny(gray,30, 950)
 
 ##Detect and draw contours
 contours, _ = cv.findContours(edged, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
-cv.drawContours(img, contours, -1, (0, 255, 0), 2)
+cv.drawContours(image, contours, -1, (0, 255, 0), 2)
 
 ##Displaying the image
-#disp_img = cv.imread(OUTPUT_IMAGE)
-cv.imshow('Final Image', img)
+disp_img = cv.imread(OUTPUT_IMAGE)
+cv.imshow('Cropped Image', image)
 
 cv.waitKey(0)
