@@ -14,6 +14,9 @@ img = cv.resize(img, (1024, 720))
 ## Selecting the ROI
 r = cv.selectROI("Select the area", img)
 
+### coordinates of r
+x, y, w, h = r
+
 #Cropping the image
 cropped_image = img[int(r[1]):int(r[1]+r[3]), 
                       int(r[0]):int(r[0]+r[2])]
@@ -43,10 +46,19 @@ edged = cv.Canny(gray,30, 950)
 
 ##Detect and draw contours
 contours, _ = cv.findContours(edged, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
-cv.drawContours(image, contours, -1, (0, 255, 0), 2)
+cv.drawContours(image, contours, -1, (0, 255, 0), 3)
+
+## Empty image array
+empty_image = np.zeros_like(img)
+empty_image = cv.resize(empty_image, (1024, 720))
+
+#Imposing the image
+without_bg = cv.imread(OUTPUT_IMAGE)
+empty_image[y:y+h, x:x+w] = image
+# result = cv.addWeighted(img, 0.3, empty_image, 0.5, 0)
+result = cv.addWeighted(img, 0.6, empty_image, 0.3, 0)
 
 ##Displaying the image
-disp_img = cv.imread(OUTPUT_IMAGE)
-cv.imshow('Cropped Image', image)
+cv.imshow('Cropped Image', result)
 
 cv.waitKey(0)
