@@ -5,9 +5,10 @@ from PIL import Image
 
 INPUT_IMAGE = r'Cropped Image.jpg'
 OUTPUT_IMAGE = 'rembg.jpg'
+ORIGINAL_IMAGE = r'TEST IMAGES\1.jpg'
 
 #Read the image
-img = cv.imread(r'TEST IMAGES\1.jpg')
+img = cv.imread(ORIGINAL_IMAGE)
 img = cv.resize(img, (1024, 720))
 
 ## Selecting the ROI
@@ -30,8 +31,22 @@ output = output.convert('RGB')
 ## Saving the image without background
 output.save(OUTPUT_IMAGE)
 
+##### Contouring
+##Read the iamge
+image = cv.imread(OUTPUT_IMAGE)
+
+# Grayscale
+gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
+  
+# Find Canny edges
+edged = cv.Canny(gray,30, 900)
+
+##Detect and draw contours
+contours, _ = cv.findContours(edged, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_NONE)
+cv.drawContours(img, contours, -1, (0, 255, 0), 2)
+
 ##Displaying the image
-disp_img = cv.imread(OUTPUT_IMAGE)
-cv.imshow('Cropped Image', disp_img)
+#disp_img = cv.imread(OUTPUT_IMAGE)
+cv.imshow('Final Image', img)
 
 cv.waitKey(0)
